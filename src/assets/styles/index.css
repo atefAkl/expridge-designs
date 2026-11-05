@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   MAWTHIQ & JISR AL-KHIBRA (EXEP-RIDGE) BRAND DESIGN SYSTEM
+   Milestone 2: Design Foundation & Semantic Brand Tokens
+   ========================================================================== */
+
+@theme {
+  /* Typography */
+  --font-cairo: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: var(--font-cairo);
+
+  /* Official Brand Palette */
+  --color-brand-primary: #0F2D5B;
+  --color-brand-primary-dark: #0A1C38;
+  --color-brand-primary-light: #1A3F74;
+  --color-brand-tech: #2563EB;
+  --color-brand-tech-hover: #1D4ED8;
+  --color-brand-accent: #D4AF7C;
+  --color-brand-accent-hover: #BF955A;
+  --color-brand-accent-light: #F7EFE4;
+  --color-brand-bg: #F8F6EF;
+  --color-brand-neutral: #94A3B8;
+
+  /* Semantic Surfaces */
+  --color-surface-white: #FFFFFF;
+  --color-surface-ivory: #F8F6EF;
+  --color-surface-dark: #0F2D5B;
+  --color-surface-dark-card: #132F5C;
+  --color-surface-dark-border: #1E3F73;
+
+  /* Semantic Text */
+  --color-text-primary-light: #0F2D5B;
+  --color-text-secondary-light: #475569;
+  --color-text-muted-light: #64748B;
+  --color-text-primary-dark: #FFFFFF;
+  --color-text-secondary-dark: #E2E8F0;
+  --color-text-muted-dark: #94A3B8;
+
+  /* Borders & Dividers */
+  --color-border-subtle: #E2E8F0;
+  --color-border-ivory: #E7E3D4;
+  --color-border-gold: rgba(212, 175, 124, 0.35);
+
+  /* Elevation Shadows */
+  --shadow-subtle: 0 1px 3px 0 rgba(15, 45, 91, 0.04), 0 1px 2px -1px rgba(15, 45, 91, 0.04);
+  --shadow-card: 0 4px 6px -1px rgba(15, 45, 91, 0.06), 0 2px 4px -2px rgba(15, 45, 91, 0.06);
+  --shadow-elevated: 0 12px 24px -4px rgba(15, 45, 91, 0.08), 0 4px 6px -4px rgba(15, 45, 91, 0.03);
+  --shadow-gold-glow: 0 0 24px rgba(212, 175, 124, 0.25);
+  --shadow-tech-glow: 0 0 24px rgba(37, 99, 235, 0.2);
+}
+
+@layer base {
+  :root {
+    /* Brand Raw Variables */
+    --color-primary: #0F2D5B;
+    --color-primary-dark: #0A1C38;
+    --color-primary-light: #1A3F74;
+    --color-tech-blue: #2563EB;
+    --color-accent-gold: #D4AF7C;
+    --color-accent-hover: #BF955A;
+    --color-bg-ivory: #F8F6EF;
+    --color-neutral-slate: #94A3B8;
+
+    /* Semantic Typography Scales */
+    --font-family-arabic: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family-english: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Layout Spacing */
+    --max-content-width: 1280px;
+    --section-py: clamp(4rem, 6vw, 6.5rem);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-family-arabic);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: var(--color-bg-ivory);
+    color: var(--color-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Headings typography default */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-arabic);
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.015em;
+  }
+}
+
+/* ==========================================================================
+   UTILITY & COMPONENT BASE PATTERNS
+   ========================================================================== */
+
+/* Gold linear divider matching brand stationary rules */
+.brand-divider-gold {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D4AF7C, transparent);
+}
+
+/* Tech blue subtle gradient mesh */
+.brand-gradient-tech {
+  background: linear-gradient(135deg, #0F2D5B 0%, #0A1C38 100%);
+}
+
+/* Soft gold metallic button background */
+.brand-btn-gold {
+  background-color: #D4AF7C;
+  color: #0F2D5B;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.brand-btn-gold:hover {
+  background-color: #BF955A;
+  box-shadow: 0 4px 14px rgba(212, 175, 124, 0.35);
+}
