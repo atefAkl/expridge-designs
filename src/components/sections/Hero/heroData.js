@@ -13,7 +13,7 @@ export const HERO_SLIDES = [
     titlePrefix: "نبحث عن شريك في البناء...",
     titleHighlight: "لا عن موظف.",
     subtitle:
-      "في موثِق، نعمل على بناء كيان تقني وريادي يهدف إلى تحويل الخبرات والأفكار والقدرات إلى منتجات وأعمال حقيقية.",
+      " نحن نعمل على بناء كيان تقني وريادي يهدف إلى تحويل الخبرات والأفكار والقدرات إلى منتجات وأعمال حقيقية.",
     primaryCta: {
       label: "قدّم طلب الانضمام كشريك",
       href: "#final-cta",
@@ -39,7 +39,7 @@ export const HERO_SLIDES = [
       href: "#final-cta",
     },
     secondaryCta: {
-      label: "تعرّف على رؤية موثِق",
+      label: "تعرّف على رؤيتنا",
       href: "#vision",
     },
     image: slide2Img,
@@ -58,7 +58,7 @@ export const HERO_SLIDES = [
       href: "#final-cta",
     },
     secondaryCta: {
-      label: "تعرّف على رؤية موثِق",
+      label: "تعرّف على رؤيتنا",
       href: "#vision",
     },
     image: slide3Img,
