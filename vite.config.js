@@ -13,6 +13,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: '/expridge-designs/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

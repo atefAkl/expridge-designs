@@ -1,119 +1,143 @@
-import React from 'react';
-import { Container } from '@/components/common';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Container, SectionHeader } from '@/components/common';
 import { VISION_DATA } from './visionData';
-import { Sparkles, ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Compass, Target, Lightbulb } from 'lucide-react';
 
-/**
- * Section: Our Vision (قسم الرؤية)
- * Design Type: Editorial / Statement Layout (Inspired by Gemic — Our Impact)
- * 
- * Features:
- * - Left side: Large editorial typography, comfortable line length, spacious composition.
- * - Right side: Art-directed two-image composition with deliberate proportions and gold accents.
- * - 100% strict content adherence to official document DOC ID: MOS-CVS-001 (Page 3 & 4).
- * - Zero cards, zero invented copy.
- */
+const TAB_ICONS = {
+  vision: Compass,
+  mission: Lightbulb,
+  goals: Target,
+};
+
 export function VisionSection() {
-  const { headline, lead, paragraphs, highlight, images, badge } = VISION_DATA;
+  const { headline, badge, tabs } = VISION_DATA;
+  const [activeTabId, setActiveTabId] = useState('vision');
+
+  const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
+  const ActiveIcon = TAB_ICONS[activeTab.id] || Compass;
 
   return (
     <section
       id="vision"
       aria-label="رؤية موثِق"
-      className="py-24 lg:py-32 bg-[#F8F6EF] border-b border-[#E7E3D4]/80 overflow-hidden relative"
+      className="pt-10 pb-16 lg:pt-14 lg:pb-20 bg-[#F8F6EF] border-b border-[#E7E3D4]/80 overflow-hidden relative"
     >
       {/* Subtle Background Glow Accents */}
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#D4AF7C]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-80 h-80 bg-[#0F2D5B]/5 rounded-full blur-3xl pointer-events-none" />
 
       <Container className="relative z-10">
-        {/* Editorial Two-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        {/* Unified Centered Header with Lateral Lines */}
+        <SectionHeader
+          badge={badge}
+          title={headline}
+          centered={true}
+          theme="light"
+          goldDivider={true}
+          showSideLines={true}
+          className="mb-8 sm:mb-12"
+        />
+
+        {/* Interactive Tabs Selector */}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex items-center p-1.5 rounded-2xl bg-white border border-[#E7E3D4] shadow-sm gap-2">
+            {tabs.map((tab) => {
+              const Icon = TAB_ICONS[tab.id] || Compass;
+              const isSelected = tab.id === activeTabId;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTabId(tab.id)}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold font-cairo transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#0F2D5B] text-white shadow-md'
+                      : 'text-[#475569] hover:text-[#0F2D5B] hover:bg-[#F8F6EF]'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isSelected ? 'text-[#D4AF7C]' : 'text-slate-400'}`} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Tab Content Display - Two Column Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* LEFT SIDE: Editorial Statement & Typographic Hierarchy */}
-          <div className="lg:col-span-7 space-y-8 text-right font-cairo">
-            
-            {/* Editorial Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#D4AF7C]/40 text-[#0F2D5B] text-xs font-bold shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF7C] shrink-0" />
-              <span>{badge}</span>
-            </div>
+          {/* LEFT SIDE: Narrative text matching active tab */}
+          <div className="lg:col-span-7 space-y-6 text-right font-cairo">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="space-y-6"
+              >
+                {/* Active Tab Label Indicator */}
+                <div className="inline-flex items-center gap-2 text-sm font-bold text-[#D4AF7C] bg-[#0F2D5B] px-3.5 py-1 rounded-lg">
+                  <ActiveIcon className="w-4 h-4" />
+                  <span>{activeTab.label} موثِق</span>
+                </div>
 
-            {/* Large Statement Headline */}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0F2D5B] tracking-tight leading-[1.25]">
-              {headline}
-            </h2>
+                {/* Lead Headline */}
+                <h3 className="text-xl sm:text-2xl font-bold text-[#0F2D5B] leading-snug">
+                  {activeTab.lead}
+                </h3>
 
-            {/* Gold Accent Rule */}
-            <div className="w-16 h-1 bg-[#D4AF7C] rounded-full" />
+                {/* Paragraphs */}
+                <div className="space-y-4 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                  {activeTab.paragraphs.map((p, idx) => (
+                    <p key={idx}>{p}</p>
+                  ))}
+                </div>
 
-            {/* Lead Narrative */}
-            <p className="text-xl sm:text-2xl font-bold text-[#0F2D5B]/90 leading-snug">
-              {lead}
-            </p>
-
-            {/* Body Narrative - Comfortable Line Length & Spacious Leading */}
-            <div className="space-y-5 text-base sm:text-lg text-slate-700 leading-relaxed max-w-2xl font-normal">
-              {paragraphs.map((p, idx) => (
-                <p key={idx}>{p}</p>
-              ))}
-            </div>
-
-            {/* Strategic Callout */}
-            <div className="border-r-4 border-[#D4AF7C] pr-5 py-3 bg-white/70 rounded-l-2xl border border-r-4 border-slate-200/60 shadow-sm max-w-2xl">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="w-5 h-5 text-[#D4AF7C] shrink-0 mt-1" />
-                <p className="text-base sm:text-lg text-[#0F2D5B] font-bold leading-relaxed">
-                  {highlight}
-                </p>
-              </div>
-            </div>
+                {/* Highlight Callout */}
+                <div className="border-r-4 border-[#D4AF7C] pr-5 py-3.5 bg-white/80 rounded-l-2xl border border-r-4 border-[#E7E3D4] shadow-sm max-w-2xl">
+                  <div className="flex items-start gap-3">
+                    <ShieldCheck className="w-5 h-5 text-[#D4AF7C] shrink-0 mt-1" />
+                    <p className="text-sm sm:text-base text-[#0F2D5B] font-bold leading-relaxed">
+                      {activeTab.highlight}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* RIGHT SIDE: Art-Directed Visual Composition */}
+          {/* RIGHT SIDE: Active Tab Image */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
-              
-              {/* Primary Large Image */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#E7E3D4] bg-white group">
-                <img
-                  src={images.primary.src}
-                  alt={images.primary.alt}
-                  className="w-full h-80 sm:h-96 lg:h-[430px] object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
-                />
-                {/* Subtle Image Vignette & Contrast Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C38]/60 via-transparent to-transparent pointer-events-none" />
-                
-                {/* Image Caption Label */}
-                <div className="absolute bottom-4 right-4 left-4 p-3 rounded-xl bg-white/90 backdrop-blur-md border border-white/40 shadow-sm">
-                  <p className="text-xs font-bold text-[#0F2D5B] font-cairo">
-                    {images.primary.caption}
-                  </p>
-                </div>
-              </div>
-
-              {/* Secondary Overlapping Image */}
-              <div className="absolute -bottom-8 -left-4 sm:-bottom-10 sm:-left-8 w-3/5 sm:w-1/2 rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white group hidden sm:block">
-                <img
-                  src={images.secondary.src}
-                  alt={images.secondary.alt}
-                  className="w-full h-44 sm:h-52 object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C38]/50 via-transparent to-transparent pointer-events-none" />
-                
-                {/* Secondary Caption */}
-                <div className="absolute bottom-2.5 right-2.5 left-2.5 p-2 rounded-lg bg-[#0F2D5B]/90 backdrop-blur-md border border-white/10">
-                  <p className="text-[11px] font-bold text-white font-cairo truncate">
-                    {images.secondary.caption}
-                  </p>
-                </div>
-              </div>
-
-              {/* Decorative Geometric Gold Corner Accents */}
-              <div className="absolute -top-3 -right-3 w-8 h-8 border-t-2 border-r-2 border-[#D4AF7C] rounded-tr-xl pointer-events-none" />
-              <div className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-[#D4AF7C] rounded-br-xl pointer-events-none" />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab.id}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  className="relative rounded-3xl overflow-hidden shadow-xl border border-[#E7E3D4] bg-white group"
+                >
+                  <img
+                    src={activeTab.image.src}
+                    alt={activeTab.image.alt}
+                    className="w-full h-72 sm:h-84 lg:h-[390px] object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  {/* Subtle Vignette Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C38]/70 via-transparent to-transparent pointer-events-none" />
+                  
+                  {/* Image Caption */}
+                  <div className="absolute bottom-4 right-4 left-4 p-3 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 shadow-sm text-right">
+                    <p className="text-xs font-bold text-[#0F2D5B] font-cairo">
+                      {activeTab.image.caption}
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Mail, Phone, MapPin, Globe, ArrowUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Globe, ArrowUp, Send, Check } from 'lucide-react';
 import { Container, BrandLogo } from '@/components/common';
-import { SITE_CONFIG, FOOTER_COLUMNS } from '@/constants';
+import { SITE_CONFIG, FOOTER_LINKS } from '@/constants';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -21,20 +21,19 @@ function TwitterIcon({ className = 'w-4 h-4' }) {
   );
 }
 
-/**
- * Structured Multi-Column Corporate Footer
- * Inspired by Multi Column Footer Layout reference (Halden Miller style)
- * 
- * Features:
- * - 4-Column responsive grid on desktop, 2-column on tablet, single column on mobile.
- * - Column 1: Brand identity, logo, description, and verified official social channels.
- * - Column 2: Quick navigation links to all main landing sections.
- * - Column 3: About Mawthiq strategic narrative anchors.
- * - Column 4: Verified additional & legal destinations.
- * - Bottom Bar: Dynamic copyright year, legal disclaimer, and smooth "Back to Top" action.
- * - Full Arabic RTL and keyboard accessibility support.
- */
 export function Footer() {
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email && email.includes('@')) {
+      setIsSubscribed(true);
+      setEmail('');
+      setTimeout(() => setIsSubscribed(false), 4000);
+    }
+  };
+
   const scrollToTop = () => {
     if (typeof window === 'undefined') return;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -45,144 +44,147 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#0A1C38] text-slate-300 pt-16 pb-12 border-t border-[#1E3F73] relative select-none">
+    <footer
+      id="contact"
+      className="bg-[#0A1C38] text-slate-300 pt-16 pb-12 border-t border-[#1E3F73] relative select-none"
+    >
       <Container>
-        {/* Main 4-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14 border-b border-white/10 text-right font-cairo">
+        {/* Top Section: Brand + Newsletter + Contact Button */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-12 border-b border-white/10 items-center text-right font-cairo">
           
-          {/* Column 1: Brand Identity & Social Links (5 of 12 cols on desktop) */}
-          <div className="lg:col-span-5 space-y-6 lg:pl-10 lg:border-l lg:border-white/10">
-            <BrandLogo variant="dark" size="sm" showSubtitle={true} />
-
+          {/* Brand Info & Tagline (5 cols) */}
+          <div className="lg:col-span-5 space-y-4">
+            <BrandLogo variant="dark" size="lg" />
             <p className="text-sm text-[#94A3B8] leading-relaxed max-w-md font-normal">
               {SITE_CONFIG.subTagline}
             </p>
-
-            {/* Direct Contact Info */}
-            <div className="space-y-2 text-xs text-slate-400 font-normal pt-1">
-              <div className="flex items-center gap-2.5">
-                <Mail className="w-3.5 h-3.5 text-[#D4AF7C] shrink-0" />
-                <a
-                  href={`mailto:${SITE_CONFIG?.contactEmail || 'atef@exep-ridge.com'}`}
-                  className="hover:text-white transition-colors"
-                >
-                  {SITE_CONFIG?.contactEmail || 'atef@exep-ridge.com'}
-                </a>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Globe className="w-3.5 h-3.5 text-[#D4AF7C] shrink-0" />
-                <span dir="ltr">{SITE_CONFIG?.website || 'www.exep-ridge.com'}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <MapPin className="w-3.5 h-3.5 text-[#D4AF7C] shrink-0" />
-                <span>{SITE_CONFIG?.address || 'المملكة العربية السعودية، الرياض'}</span>
-              </div>
+            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-normal pt-1">
+              <span className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#D4AF7C]" />
+                {SITE_CONFIG?.address || 'المملكة العربية السعودية، الرياض'}
+              </span>
+              <span className="flex items-center gap-1.5" dir="ltr">
+                <Globe className="w-3.5 h-3.5 text-[#D4AF7C]" />
+                {SITE_CONFIG?.website || 'www.exep-ridge.com'}
+              </span>
             </div>
+          </div>
 
-            {/* Verified Social Media Channels */}
-            <div className="pt-2 flex items-center gap-3">
-              <a
-                href={SITE_CONFIG?.socialLinks?.linkedin || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="حساب لينكد إن الرسمي"
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
-              >
-                <LinkedinIcon className="w-4 h-4" />
-              </a>
+          {/* Newsletter Subscription Box (7 cols) */}
+          <div className="lg:col-span-7 bg-white/5 border border-white/10 p-6 sm:p-7 rounded-2xl backdrop-blur-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h4 className="text-white font-bold text-base">
+                  اشترك في نشرتنا البريدية
+                </h4>
+                <p className="text-xs text-[#94A3B8] mt-1">
+                  ابقَ على اطلاع بأحدث التطورات، وفرص الشراكة، والمنتجات الرقمية.
+                </p>
+              </div>
 
-              <a
-                href={SITE_CONFIG?.socialLinks?.twitter || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="حساب تويتر الرسمي"
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
-              >
-                <TwitterIcon className="w-4 h-4" />
-              </a>
-
+              {/* Direct Contact Button */}
               <a
                 href={`mailto:${SITE_CONFIG?.contactEmail || 'atef@exep-ridge.com'}`}
-                aria-label="إرسال بريد إلكتروني"
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-[#D4AF7C] text-slate-200 hover:text-[#0A1C38] border border-white/15 text-xs font-bold transition-all shrink-0"
               >
-                <Mail className="w-4 h-4" />
-              </a>
-
-              <a
-                href={`tel:${SITE_CONFIG?.phone || '+966501234567'}`}
-                aria-label="الاتصال الهاتفي"
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
-              >
-                <Phone className="w-4 h-4" />
+                <Mail className="w-3.5 h-3.5" />
+                <span>تواصل معنا مباشرة</span>
               </a>
             </div>
-          </div>
 
-          {/* Column 2: Quick Links (3 of 12 cols) */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-white font-bold text-sm tracking-wider uppercase">
-              {FOOTER_COLUMNS.quickLinks.title}
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              {FOOTER_COLUMNS.quickLinks.links.map((link, idx) => (
-                <li key={idx}>
-                  <a
-                    href={link.href}
-                    className="text-[#94A3B8] hover:text-[#D4AF7C] transition-colors inline-block"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: About Mawthiq (2 of 12 cols) */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-white font-bold text-sm tracking-wider uppercase">
-              {FOOTER_COLUMNS.about.title}
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              {FOOTER_COLUMNS.about.links.map((link, idx) => (
-                <li key={idx}>
-                  <a
-                    href={link.href}
-                    className="text-[#94A3B8] hover:text-[#D4AF7C] transition-colors inline-block"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4: Additional / Legal Links (2 of 12 cols) */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-white font-bold text-sm tracking-wider uppercase">
-              {FOOTER_COLUMNS.additional.title}
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              {FOOTER_COLUMNS.additional.links.map((link, idx) => (
-                <li key={idx}>
-                  <a
-                    href={link.href}
-                    className="text-[#94A3B8] hover:text-[#D4AF7C] transition-colors inline-block"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {/* Subscription Form */}
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="أدخل بريدك الإلكتروني"
+                required
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#081729] border border-white/15 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-[#D4AF7C] transition-colors"
+                dir="rtl"
+              />
+              <button
+                type="submit"
+                className="px-6 py-2.5 rounded-xl bg-[#D4AF7C] hover:bg-[#B08850] text-[#0A1C38] font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-md"
+              >
+                {isSubscribed ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    <span>تم الاشتراك!</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 rotate-180" />
+                    <span>اشتراك</span>
+                  </>
+                )}
+              </button>
+            </form>
           </div>
 
         </div>
 
-        {/* Bottom Row: Dynamic Copyright + "Back to Top" Action */}
+        {/* Middle Section: Single Row for Links + Social Media Icons */}
+        <div className="py-8 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 text-right font-cairo">
+          
+          {/* Streamlined Single Row of Links */}
+          <nav className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-2.5 text-sm">
+            {FOOTER_LINKS.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.href}
+                className="text-slate-300 hover:text-[#D4AF7C] transition-colors font-medium"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Social Media Channels */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <a
+              href={SITE_CONFIG?.socialLinks?.linkedin || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="حساب لينكد إن الرسمي"
+              className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
+            >
+              <LinkedinIcon className="w-4 h-4" />
+            </a>
+
+            <a
+              href={SITE_CONFIG?.socialLinks?.twitter || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="حساب تويتر الرسمي"
+              className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
+            >
+              <TwitterIcon className="w-4 h-4" />
+            </a>
+
+            <a
+              href={`mailto:${SITE_CONFIG?.contactEmail || 'atef@exep-ridge.com'}`}
+              aria-label="إرسال بريد إلكتروني"
+              className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+
+            <a
+              href={`tel:${SITE_CONFIG?.phone || '+966501234567'}`}
+              aria-label="الاتصال الهاتفي"
+              className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
+            >
+              <Phone className="w-4 h-4" />
+            </a>
+          </div>
+
+        </div>
+
+        {/* Bottom Section: Copyright & Back to Top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#94A3B8] gap-4 font-cairo">
           <p>© {CURRENT_YEAR} {SITE_CONFIG.fullName}. جميع الحقوق محفوظة.</p>
 
-          {/* Back to Top Smooth Scroll Action */}
           <button
             type="button"
             onClick={scrollToTop}
@@ -194,7 +196,7 @@ export function Footer() {
           </button>
         </div>
 
-        {/* Editorial Regulatory & Disclaimer Note (Inspired by reference footer note) */}
+        {/* Regulatory Note */}
         <div className="pt-6 mt-6 border-t border-white/5 text-[11px] text-slate-500 font-cairo leading-relaxed text-right">
           هذه البوابة مخصصة لبرنامج استقطاب الشركاء الاستراتيجيين والتقنيين لمنظومة موثِق وجسر الخبرة للحلول البرمجية، وتهدف إلى بناء شراكات مؤسسية حقيقية وتحويل الأفكار والخبرات إلى أعمال مستدامة.
         </div>

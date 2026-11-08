@@ -2,12 +2,11 @@ import { TrendingUp, Cpu, Settings, PieChart, Handshake, PlusCircle } from 'luci
 
 /**
  * Section 03: Who We're Looking For Data
- * 100% strictly preserved from official document:
- * DOC ID: MOS-CVS-001 (3. قسم من نبحث عنهم – Who We're Looking For - Page 4 & 5)
+ * Headline updated to concise format requested in video feedback
  */
 export const TARGET_PARTNERS_DATA = {
   badge: 'من نبحث عنهم',
-  headline: 'لا نبحث عن مسميات وظيفية... نبحث عن قدرات حقيقية.',
+  headline: 'نبحث عن قدرات حقيقية... لا مسميات وظيفية.',
   intro: 'لا يشترط أن تكون قد أسست شركة من قبل، أو شغلت منصبًا إداريًا كبيرًا. ما يهمنا هو ما تستطيع إضافته، والمسؤولية التي يمكنك تحملها، والنتائج التي تستطيع المساهمة في تحقيقها.',
   subheading: 'نرحب بأصحاب القدرات والخبرات في مجالات متعددة، ومنها:',
   domains: [
@@ -69,7 +68,7 @@ export const TARGET_PARTNERS_DATA = {
     {
       id: 'other-domains',
       number: '06',
-      title: 'مجالات أخرى',
+      title: 'مجالات أخرى وقدرات نوعية',
       icon: PlusCircle,
       isSpecial: true,
       text: 'إذا كانت لديك خبرة أو قدرة ترى أنها يمكن أن تضيف قيمة إلى موثِق، فنحن نرحب بالتعرف عليها، حتى لو لم تندرج ضمن المجالات السابقة.',

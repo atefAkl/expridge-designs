@@ -4,15 +4,14 @@ import slide3Img from '@/assets/images/hero/slide-3.jpg';
 
 /**
  * Hero Carousel Slides Data
- * Content taken 100% strictly and word-for-word from official document:
- * DOC ID: MOS-CVS-001 (صفحة التعريف واستقطاب الشركاء - 1. القسم الرئيسي Hero Section)
+ * Updated with punchy, distinct, concise titles per slide as instructed in video feedback
  */
 export const HERO_SLIDES = [
   {
     id: 'slide-1',
     badge: 'استقطاب الشركاء',
-    titlePrefix: 'لا نبحث عمّن يعمل معنا فقط...',
-    titleHighlight: 'بل عمّن يشاركنا البناء.',
+    titlePrefix: 'نبحث عن شريك في البناء...',
+    titleHighlight: 'لا عن موظف.',
     subtitle:
       'في موثِق، نعمل على بناء كيان تقني وريادي يهدف إلى تحويل الخبرات والأفكار والقدرات إلى منتجات وأعمال حقيقية.',
     primaryCta: {
@@ -29,11 +28,11 @@ export const HERO_SLIDES = [
   },
   {
     id: 'slide-2',
-    badge: 'استقطاب الشركاء',
-    titlePrefix: 'لا نبحث عمّن يعمل معنا فقط...',
-    titleHighlight: 'بل عمّن يشاركنا البناء.',
+    badge: 'صناعة القرارات',
+    titlePrefix: 'نبحث عن من لديه رؤية...',
+    titleHighlight: 'لا عمن ينتظر تعليمات.',
     subtitle:
-      'نؤمن أن بناء شركة ناجحة لا يعتمد على المهارة التقنية وحدها، بل يحتاج إلى عقول تفكر، وأشخاص تبادر، وشركاء يتحملون المسؤولية ويشاركون في صناعة القرارات والنتائج.',
+      'نؤمن أن بناء شركة ناجحة لا يعتمد على المهارة التقنية وحدها، بل يحتاج إلى عقول تفكر، ومبادرة حقيقية، وشركاء يتحملون المسؤولية ويشاركون في صناعة القرارات والنتائج.',
     primaryCta: {
       label: 'قدّم طلب الانضمام كشريك',
       href: '#final-cta',
@@ -48,11 +47,11 @@ export const HERO_SLIDES = [
   },
   {
     id: 'slide-3',
-    badge: 'استقطاب الشركاء',
-    titlePrefix: 'لا نبحث عمّن يعمل معنا فقط...',
-    titleHighlight: 'بل عمّن يشاركنا البناء.',
+    badge: 'رحلة البناء',
+    titlePrefix: 'نصنع شراكات استراتيجية...',
+    titleHighlight: 'تبني المستقبل.',
     subtitle:
-      'نبحث عن أشخاص يرغبون في أن يكونوا جزءًا من رحلة البناء، لا مجرد أفراد ينفذون مهامًا محددة.',
+      'نبحث عن أشخاص يرغبون في أن يكونوا جزءًا فاعلاً من رحلة التأسيس والبناء، ويشاركون في تشكيل مستقبل الكيان لا مجرد أفراد ينفذون مهاماً محددة.',
     primaryCta: {
       label: 'قدّم طلب الانضمام كشريك',
       href: '#final-cta',
