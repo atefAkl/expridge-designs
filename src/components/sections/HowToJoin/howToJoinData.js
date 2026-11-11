@@ -53,6 +53,6 @@ export const HOW_TO_JOIN_DATA = {
   ],
   cta: {
     label: 'قدّم طلب الانضمام كشريك',
-    href: '#final-cta',
+    href: '/portal#/apply',
   },
 };

@@ -67,7 +67,7 @@ export function Navbar() {
               <span>{t('nav.langSwitchLabel')}</span>
             </button>
 
-            <a href="#final-cta" className="hidden sm:inline-flex">
+            <a href="/portal#/apply" className="hidden sm:inline-flex">
               <Button variant="accent" size="sm" icon={CtaArrow} iconPosition="end">
                 {t('nav.applyCta')}
               </Button>
@@ -105,7 +105,7 @@ export function Navbar() {
               ))}
               <div className="pt-3 border-t border-white/10">
                 <a
-                  href="#final-cta"
+                  href="/portal#/apply"
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full block"
                 >
