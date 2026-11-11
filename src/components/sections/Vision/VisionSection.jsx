@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Container, SectionHeader } from '@/components/common';
 import { VISION_DATA } from './visionData';
 import { ShieldCheck, Compass, Target, Lightbulb } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const TAB_ICONS = {
   vision: Compass,
@@ -11,16 +12,34 @@ const TAB_ICONS = {
 };
 
 export function VisionSection() {
-  const { headline, badge, tabs } = VISION_DATA;
+  const { t, isRtl } = useLanguage();
+  const translatedTabs = t('vision.tabs');
+  const tabs = VISION_DATA.tabs.map((tab, idx) => {
+    const tr = Array.isArray(translatedTabs) ? translatedTabs[idx] : null;
+    if (!tr) return tab;
+    return {
+      ...tab,
+      label: tr.label,
+      lead: tr.lead,
+      paragraphs: tr.paragraphs,
+      highlight: tr.highlight,
+      image: {
+        ...tab.image,
+        alt: tr.imageAlt,
+        caption: tr.imageCaption,
+      },
+    };
+  });
+
   const [activeTabId, setActiveTabId] = useState('vision');
 
-  const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
+  const activeTab = tabs.find((item) => item.id === activeTabId) || tabs[0];
   const ActiveIcon = TAB_ICONS[activeTab.id] || Compass;
 
   return (
     <section
       id="vision"
-      aria-label="رؤية موثِق"
+      aria-label={t('vision.sectionAria')}
       className="pt-10 pb-16 lg:pt-14 lg:pb-20 bg-[#F8F6EF] border-b border-[#E7E3D4]/80 overflow-hidden relative"
     >
       {/* Subtle Background Glow Accents */}
@@ -30,8 +49,8 @@ export function VisionSection() {
       <Container className="relative z-10">
         {/* Unified Centered Header with Lateral Lines */}
         <SectionHeader
-          badge={badge}
-          title={headline}
+          badge={t('vision.badge')}
+          title={t('vision.headline')}
           centered={true}
           theme="light"
           goldDivider={true}
@@ -66,9 +85,9 @@ export function VisionSection() {
 
         {/* Tab Content Display - Two Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          
-          {/* LEFT SIDE: Narrative text matching active tab */}
-          <div className="lg:col-span-7 space-y-6 text-right font-cairo">
+
+          {/* Narrative text matching active tab */}
+          <div className="lg:col-span-7 space-y-6 text-start font-cairo">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab.id}
@@ -81,7 +100,7 @@ export function VisionSection() {
                 {/* Active Tab Label Indicator */}
                 <div className="inline-flex items-center gap-2 text-sm font-bold text-[#D4AF7C] bg-[#0F2D5B] px-3.5 py-1 rounded-lg">
                   <ActiveIcon className="w-4 h-4" />
-                  <span>{activeTab.label} موثِق</span>
+                  <span>{activeTab.label} {t('vision.tabIndicatorSuffix')}</span>
                 </div>
 
                 {/* Lead Headline */}
@@ -97,7 +116,13 @@ export function VisionSection() {
                 </div>
 
                 {/* Highlight Callout */}
-                <div className="border-r-4 border-[#D4AF7C] pr-5 py-3.5 bg-white/80 rounded-l-2xl border border-r-4 border-[#E7E3D4] shadow-sm max-w-2xl">
+                <div
+                  className={`${
+                    isRtl
+                      ? 'border-r-4 pr-5 rounded-l-2xl'
+                      : 'border-l-4 pl-5 rounded-r-2xl'
+                  } border-[#D4AF7C] py-3.5 px-4 bg-white/80 border border-[#E7E3D4] shadow-sm max-w-2xl`}
+                >
                   <div className="flex items-start gap-3">
                     <ShieldCheck className="w-5 h-5 text-[#D4AF7C] shrink-0 mt-1" />
                     <p className="text-sm sm:text-base text-[#0F2D5B] font-bold leading-relaxed">
@@ -109,7 +134,7 @@ export function VisionSection() {
             </AnimatePresence>
           </div>
 
-          {/* RIGHT SIDE: Active Tab Image */}
+          {/* Active Tab Image */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
               <AnimatePresence mode="wait">
@@ -129,9 +154,9 @@ export function VisionSection() {
                   />
                   {/* Subtle Vignette Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C38]/70 via-transparent to-transparent pointer-events-none" />
-                  
+
                   {/* Image Caption */}
-                  <div className="absolute bottom-4 right-4 left-4 p-3 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 shadow-sm text-right">
+                  <div className="absolute bottom-4 right-4 left-4 p-3 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 shadow-sm text-start">
                     <p className="text-xs font-bold text-[#0F2D5B] font-cairo">
                       {activeTab.image.caption}
                     </p>

@@ -2,20 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Container, Button } from '@/components/common';
 import { HOW_TO_JOIN_DATA } from './howToJoinData';
-import { Sparkles, ArrowLeft } from 'lucide-react';
+import { Sparkles, ArrowLeft, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
-/**
- * Section 06: How to Join (خطوات الانضمام)
- * Design Type: Process Timeline (How It Works Layout Style 6 4 style)
- * 
- * Features:
- * - Desktop: Horizontal timeline with connecting lines and numbered stage nodes.
- * - Mobile: Adapts smoothly into a vertical timeline with continuous line.
- * - Progressive reveal animations respecting prefers-reduced-motion.
- * - 100% strictly preserved content from official document DOC ID: MOS-CVS-001 (Page 6 & 7).
- */
 export function HowToJoinSection() {
-  const { badge, headline, subtitle, stages, cta } = HOW_TO_JOIN_DATA;
+  const { t, isRtl } = useLanguage();
+  const translatedStages = t('howToJoin.stages');
+  const stages = HOW_TO_JOIN_DATA.stages.map((stage, idx) => {
+    const tr = Array.isArray(translatedStages) ? translatedStages[idx] : null;
+    if (!tr) return stage;
+    return {
+      ...stage,
+      shortTitle: tr.shortTitle,
+      description: tr.description,
+    };
+  });
+
+  const CtaArrow = isRtl ? ArrowLeft : ArrowRight;
+
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window !== 'undefined' && window.matchMedia) {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,7 +39,7 @@ export function HowToJoinSection() {
   return (
     <section
       id="how-to-join"
-      aria-label="خطوات الانضمام"
+      aria-label={t('howToJoin.sectionAria')}
       className="py-24 lg:py-32 bg-[#F8F6EF] relative overflow-hidden"
     >
       <Container>
@@ -43,17 +47,17 @@ export function HowToJoinSection() {
         <div className="max-w-3xl mx-auto text-center mb-16 sm:mb-20 space-y-4 font-cairo">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#D4AF7C]/40 text-[#0F2D5B] text-xs font-bold shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-[#D4AF7C] shrink-0" />
-            <span>{badge}</span>
+            <span>{t('howToJoin.badge')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0F2D5B] tracking-tight leading-[1.25]">
-            {headline}
+            {t('howToJoin.headline')}
           </h2>
 
           <div className="w-16 h-1 bg-[#D4AF7C] rounded-full mx-auto my-4" />
 
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-            {subtitle}
+            {t('howToJoin.subtitle')}
           </p>
         </div>
 
@@ -62,7 +66,7 @@ export function HowToJoinSection() {
           {/* Continuous Horizontal Connecting Line */}
           <div className="absolute top-10 right-12 left-12 h-0.5 bg-[#E7E3D4] z-0" />
 
-          <div className="grid grid-cols-5 gap-6 relative z-10 text-right font-cairo">
+          <div className="grid grid-cols-5 gap-6 relative z-10 text-start font-cairo">
             {stages.map((stage, idx) => {
               const Icon = stage.icon;
               return (
@@ -105,16 +109,16 @@ export function HowToJoinSection() {
 
         {/* MOBILE & TABLET TIMELINE (Vertical - Visible below lg screens) */}
         <div className="block lg:hidden relative mb-14 max-w-xl mx-auto">
-          {/* Continuous Vertical Line running through nodes in RTL */}
-          <div className="absolute top-6 bottom-6 right-8 w-0.5 bg-[#E7E3D4]" />
+          {/* Continuous Vertical Line running through nodes */}
+          <div className={`absolute top-6 bottom-6 ${isRtl ? 'right-8' : 'left-8'} w-0.5 bg-[#E7E3D4]`} />
 
-          <div className="space-y-8 relative z-10 text-right font-cairo">
+          <div className="space-y-8 relative z-10 text-start font-cairo">
             {stages.map((stage, idx) => {
               const Icon = stage.icon;
               return (
                 <motion.div
                   key={stage.id}
-                  initial={prefersReducedMotion ? false : { opacity: 0, x: -15 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, x: isRtl ? -15 : 15 }}
                   whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: '-30px' }}
                   transition={{
@@ -123,7 +127,7 @@ export function HowToJoinSection() {
                     ease: [0.16, 1, 0.3, 1],
                   }}
                   tabIndex={0}
-                  className="group flex items-start gap-5 pr-2 focus:outline-none"
+                  className={`group flex items-start gap-5 ${isRtl ? 'pr-2' : 'pl-2'} focus:outline-none`}
                 >
                   {/* Vertical Node */}
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white border-2 border-[#E7E3D4] group-hover:border-[#D4AF7C] shadow-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105">
@@ -150,16 +154,16 @@ export function HowToJoinSection() {
           </div>
         </div>
 
-        {/* Centered Action Button (Inspired by Elementor Template Reference) */}
+        {/* Centered Action Button */}
         <div className="text-center pt-6">
-          <a href={cta.href}>
+          <a href={HOW_TO_JOIN_DATA.cta.href}>
             <Button
               variant="accent"
               size="lg"
-              icon={ArrowLeft}
+              icon={CtaArrow}
               iconPosition="end"
             >
-              {cta.label}
+              {t('howToJoin.ctaLabel')}
             </Button>
           </a>
         </div>

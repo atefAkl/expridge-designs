@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
  * HeroSlide - Renders the cinematic background image and dark gradient overlay
  * Supports smooth crossfade and subtle cinematic motion
  */
-export function HeroSlide({ slide, isActive, prefersReducedMotion }) {
+export function HeroSlide({ slide, isActive, prefersReducedMotion, isRtl = true }) {
   return (
     <div
       className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -38,8 +38,14 @@ export function HeroSlide({ slide, isActive, prefersReducedMotion }) {
       {/* Primary Gradient Overlay for text contrast & cinematic depth */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#0A1C38] via-[#0F2D5B]/85 to-[#0A1C38]/80 mix-blend-multiply" />
 
-      {/* Secondary Directional Gradient (Right-to-Left for Arabic reading flow) */}
-      <div className="absolute inset-0 bg-gradient-to-l from-[#0A1C38]/95 via-[#0F2D5B]/75 to-transparent" />
+      {/* Secondary Directional Gradient (adapts to RTL / LTR reading flow) */}
+      <div
+        className={`absolute inset-0 ${
+          isRtl
+            ? 'bg-gradient-to-l from-[#0A1C38]/95 via-[#0F2D5B]/75 to-transparent'
+            : 'bg-gradient-to-r from-[#0A1C38]/95 via-[#0F2D5B]/75 to-transparent'
+        }`}
+      />
 
       {/* Subtle Brand Golden Glow Accent */}
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#D4AF7C]/10 rounded-full blur-3xl pointer-events-none" />

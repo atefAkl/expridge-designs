@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Globe, ArrowUp, Send, Check } from 'lucide-react';
 import { Container, BrandLogo } from '@/components/common';
 import { SITE_CONFIG, FOOTER_LINKS } from '@/constants';
+import { useLanguage } from '@/context/LanguageContext';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -24,6 +25,7 @@ function TwitterIcon({ className = 'w-4 h-4' }) {
 export function Footer() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { t, isRtl, lang } = useLanguage();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -50,22 +52,22 @@ export function Footer() {
     >
       <Container>
         {/* Top Section: Brand + Newsletter + Contact Button */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-12 border-b border-white/10 items-center text-right font-cairo">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-12 border-b border-white/10 items-center text-start font-cairo">
+
           {/* Brand Info & Tagline (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
             <BrandLogo variant="dark" size="lg" />
             <p className="text-sm text-[#94A3B8] leading-relaxed max-w-md font-normal">
-              {SITE_CONFIG.subTagline}
+              {t('site.subTagline')}
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-normal pt-1">
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#D4AF7C]" />
-                {SITE_CONFIG?.address || 'المملكة العربية السعودية، الرياض'}
+                {t('site.address')}
               </span>
               <span className="flex items-center gap-1.5" dir="ltr">
                 <Globe className="w-3.5 h-3.5 text-[#D4AF7C]" />
-                {SITE_CONFIG?.website || 'www.exep-ridge.com'}
+                {t('site.website')}
               </span>
             </div>
           </div>
@@ -75,10 +77,10 @@ export function Footer() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h4 className="text-white font-bold text-base">
-                  اشترك في نشرتنا البريدية
+                  {t('footer.newsletterTitle')}
                 </h4>
                 <p className="text-xs text-[#94A3B8] mt-1">
-                  ابقَ على اطلاع بأحدث التطورات، وفرص الشراكة، والمنتجات الرقمية.
+                  {t('footer.newsletterSubtitle')}
                 </p>
               </div>
 
@@ -88,7 +90,7 @@ export function Footer() {
                 className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-[#D4AF7C] text-slate-200 hover:text-[#0A1C38] border border-white/15 text-xs font-bold transition-all shrink-0"
               >
                 <Mail className="w-3.5 h-3.5" />
-                <span>تواصل معنا مباشرة</span>
+                <span>{t('footer.directContact')}</span>
               </a>
             </div>
 
@@ -98,10 +100,10 @@ export function Footer() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="أدخل بريدك الإلكتروني"
+                placeholder={t('footer.emailPlaceholder')}
                 required
                 className="flex-1 px-4 py-2.5 rounded-xl bg-[#081729] border border-white/15 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-[#D4AF7C] transition-colors"
-                dir="rtl"
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}
               />
               <button
                 type="submit"
@@ -110,12 +112,12 @@ export function Footer() {
                 {isSubscribed ? (
                   <>
                     <Check className="w-4 h-4" />
-                    <span>تم الاشتراك!</span>
+                    <span>{t('footer.subscribedBtn')}</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 rotate-180" />
-                    <span>اشتراك</span>
+                    <Send className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
+                    <span>{t('footer.subscribeBtn')}</span>
                   </>
                 )}
               </button>
@@ -125,8 +127,8 @@ export function Footer() {
         </div>
 
         {/* Middle Section: Single Row for Links + Social Media Icons */}
-        <div className="py-8 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 text-right font-cairo">
-          
+        <div className="py-8 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 text-start font-cairo">
+
           {/* Streamlined Single Row of Links */}
           <nav className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-2.5 text-sm">
             {FOOTER_LINKS.map((link, idx) => (
@@ -135,7 +137,7 @@ export function Footer() {
                 href={link.href}
                 className="text-slate-300 hover:text-[#D4AF7C] transition-colors font-medium"
               >
-                {link.label}
+                {t(link.labelKey)}
               </a>
             ))}
           </nav>
@@ -146,7 +148,7 @@ export function Footer() {
               href={SITE_CONFIG?.socialLinks?.linkedin || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="حساب لينكد إن الرسمي"
+              aria-label={t('footer.social.linkedinAria')}
               className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
             >
               <LinkedinIcon className="w-4 h-4" />
@@ -156,7 +158,7 @@ export function Footer() {
               href={SITE_CONFIG?.socialLinks?.twitter || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="حساب تويتر الرسمي"
+              aria-label={t('footer.social.twitterAria')}
               className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
             >
               <TwitterIcon className="w-4 h-4" />
@@ -164,7 +166,7 @@ export function Footer() {
 
             <a
               href={`mailto:${SITE_CONFIG?.contactEmail || 'atef@exep-ridge.com'}`}
-              aria-label="إرسال بريد إلكتروني"
+              aria-label={t('footer.social.emailAria')}
               className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
             >
               <Mail className="w-4 h-4" />
@@ -172,7 +174,7 @@ export function Footer() {
 
             <a
               href={`tel:${SITE_CONFIG?.phone || '+966501234567'}`}
-              aria-label="الاتصال الهاتفي"
+              aria-label={t('footer.social.phoneAria')}
               className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF7C]/50 text-slate-300 hover:text-[#D4AF7C] flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
             >
               <Phone className="w-4 h-4" />
@@ -183,22 +185,22 @@ export function Footer() {
 
         {/* Bottom Section: Copyright & Back to Top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#94A3B8] gap-4 font-cairo">
-          <p>© {CURRENT_YEAR} {SITE_CONFIG.fullName}. جميع الحقوق محفوظة.</p>
+          <p>© {CURRENT_YEAR} {t('site.fullName')}. {t('footer.copyrightSuffix')}</p>
 
           <button
             type="button"
             onClick={scrollToTop}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]"
-            aria-label="العودة إلى أعلى الصفحة"
+            aria-label={t('footer.backToTopAria')}
           >
-            <span>العودة للأعلى</span>
+            <span>{t('footer.backToTop')}</span>
             <ArrowUp className="w-3.5 h-3.5 text-[#D4AF7C]" />
           </button>
         </div>
 
         {/* Regulatory Note */}
-        <div className="pt-6 mt-6 border-t border-white/5 text-[11px] text-slate-500 font-cairo leading-relaxed text-right">
-          هذه البوابة مخصصة لبرنامج استقطاب الشركاء الاستراتيجيين والتقنيين لمنظومة موثِق وجسر الخبرة للحلول البرمجية، وتهدف إلى بناء شراكات مؤسسية حقيقية وتحويل الأفكار والخبرات إلى أعمال مستدامة.
+        <div className="pt-6 mt-6 border-t border-white/5 text-[11px] text-slate-500 font-cairo leading-relaxed text-start">
+          {t('footer.regulatoryNote')}
         </div>
       </Container>
     </footer>

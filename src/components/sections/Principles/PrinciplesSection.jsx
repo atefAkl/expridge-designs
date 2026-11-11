@@ -1,22 +1,23 @@
 import React from 'react';
 import { Container, SectionHeader } from '@/components/common';
-import { PRINCIPLES_DATA } from './principlesData';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function PrinciplesSection() {
-  const { badge, headline, subtitle, principles } = PRINCIPLES_DATA;
+  const { t } = useLanguage();
+  const principles = t('principles.items');
 
   return (
     <section
       id="principles"
-      aria-label="المبادئ التي نبني عليها"
+      aria-label={t('principles.sectionAria')}
       className="py-20 lg:py-28 bg-[#F8F6EF] border-b border-[#E7E3D4]/80 relative overflow-hidden"
     >
       <Container>
         {/* Centered Section Header with Lateral Lines */}
         <SectionHeader
-          badge={badge}
-          title={headline}
-          subtitle={subtitle}
+          badge={t('principles.badge')}
+          title={t('principles.headline')}
+          subtitle={t('principles.subtitle')}
           centered={true}
           theme="light"
           goldDivider={true}
@@ -26,11 +27,11 @@ export function PrinciplesSection() {
 
         {/* Principles Grid in Elegant White Cards */}
         <div className="max-w-4xl mx-auto space-y-4 font-cairo">
-          {principles.map((item) => (
+          {(Array.isArray(principles) ? principles : []).map((item) => (
             <div
               key={item.id}
               tabIndex={0}
-              className="group p-6 sm:p-7 bg-white rounded-2xl border border-[#E7E3D4] hover:border-[#D4AF7C] hover:shadow-md transition-all duration-300 text-right flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8"
+              className="group p-6 sm:p-7 bg-white rounded-2xl border border-[#E7E3D4] hover:border-[#D4AF7C] hover:shadow-md transition-all duration-300 text-start flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8"
             >
               {/* Number (01–05) */}
               <div className="shrink-0 w-14 h-14 rounded-xl bg-[#F8F6EF] border border-[#E7E3D4] flex items-center justify-center group-hover:bg-[#0F2D5B] transition-colors">

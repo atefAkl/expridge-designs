@@ -1,32 +1,33 @@
 /**
- * Simplified Navigation Links as requested in video feedback
+ * Simplified Navigation Links with translation keys
  */
 export const NAV_LINKS = [
-  { id: 'hero', label: 'الرئيسية', href: '#hero' },
-  { id: 'faq', label: 'الأسئلة الشائعة', href: '#faq' },
-  { id: 'contact', label: 'تواصل معنا', href: '#contact' },
+  { id: 'hero', labelKey: 'nav.links.hero', href: '#hero' },
+  { id: 'faq', labelKey: 'nav.links.faq', href: '#faq' },
+  { id: 'contact', labelKey: 'nav.links.contact', href: '#contact' },
 ];
 
 export const FOOTER_LINKS = [
-  { label: 'الرئيسية', href: '#hero' },
-  { label: 'رؤية موثِق', href: '#vision' },
-  { label: 'من نبحث عنهم', href: '#target-partners' },
-  { label: 'مفهوم الشراكة', href: '#partnership-model' },
-  { label: 'مبادئنا', href: '#principles' },
-  { label: 'الأسئلة الشائعة', href: '#faq' },
-  { label: 'سياسة الخصوصية', href: '#' },
-  { label: 'الشروط والأحكام', href: '#' },
+  { labelKey: 'footer.links.home', href: '#hero' },
+  { labelKey: 'footer.links.vision', href: '#vision' },
+  { labelKey: 'footer.links.targetPartners', href: '#target-partners' },
+  { labelKey: 'footer.links.partnershipModel', href: '#partnership-model' },
+  { labelKey: 'footer.links.principles', href: '#principles' },
+  { labelKey: 'footer.links.faq', href: '#faq' },
+  { labelKey: 'footer.links.privacy', href: '#' },
+  { labelKey: 'footer.links.terms', href: '#' },
+  { labelKey: 'footer.links.adminsLogin', href: '/portal#/login' },
 ];
 
 export const FOOTER_COLUMNS = {
   quickLinks: {
-    title: 'روابط سريعة',
+    title: 'footer.links.home',
     links: [
-      { label: 'الرئيسية', href: '#hero' },
-      { label: 'رؤية موثِق', href: '#vision' },
-      { label: 'من نبحث عنهم', href: '#target-partners' },
-      { label: 'مفهوم الشراكة', href: '#partnership-model' },
-      { label: 'الأسئلة الشائعة', href: '#faq' },
+      { labelKey: 'footer.links.home', href: '#hero' },
+      { labelKey: 'footer.links.vision', href: '#vision' },
+      { labelKey: 'footer.links.targetPartners', href: '#target-partners' },
+      { labelKey: 'footer.links.partnershipModel', href: '#partnership-model' },
+      { labelKey: 'footer.links.faq', href: '#faq' },
     ],
   },
 };

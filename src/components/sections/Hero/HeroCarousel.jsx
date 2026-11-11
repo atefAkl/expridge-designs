@@ -1,13 +1,32 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, ArrowLeft, Sparkles, Pause, Play } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ArrowLeft, ArrowRight, Sparkles, Pause, Play } from 'lucide-react';
 import { Container, Button } from '@/components/common';
 import { HeroSlide } from './HeroSlide';
 import { HERO_SLIDES } from './heroData';
+import { useLanguage } from '@/context/LanguageContext';
 
 const AUTOPLAY_INTERVAL = 6000; // 6 seconds
 
 export function HeroCarousel() {
+  const { t, isRtl } = useLanguage();
+  const translatedSlides = t('hero.slides');
+  const slides = HERO_SLIDES.map((slide, idx) => {
+    const tr = Array.isArray(translatedSlides) ? translatedSlides[idx] : null;
+    if (!tr) return slide;
+    return {
+      ...slide,
+      badge: tr.badge,
+      titlePrefix: tr.titlePrefix,
+      titleHighlight: tr.titleHighlight,
+      subtitle: tr.subtitle,
+      primaryCta: { ...slide.primaryCta, label: tr.primaryCtaLabel },
+      secondaryCta: { ...slide.secondaryCta, label: tr.secondaryCtaLabel },
+      imageAlt: tr.imageAlt,
+      tag: tr.tag,
+    };
+  });
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
@@ -18,7 +37,8 @@ export function HeroCarousel() {
   });
   const touchStartXRef = useRef(0);
   const touchEndXRef = useRef(0);
-  const totalSlides = HERO_SLIDES.length;
+  const totalSlides = slides.length;
+  const CtaArrow = isRtl ? ArrowLeft : ArrowRight;
 
   // Listen for changes in user's reduced-motion preference
   useEffect(() => {
@@ -58,10 +78,11 @@ export function HeroCarousel() {
   // Keyboard navigation
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowLeft') {
-      // In RTL, ArrowLeft navigates to next logical slide
-      nextSlide();
+      if (isRtl) nextSlide();
+      else prevSlide();
     } else if (e.key === 'ArrowRight') {
-      prevSlide();
+      if (isRtl) prevSlide();
+      else nextSlide();
     }
   };
 
@@ -78,7 +99,6 @@ export function HeroCarousel() {
     const deltaX = touchStartXRef.current - touchEndXRef.current;
     const swipeThreshold = 50;
 
-    // In RTL, swiping left moves to next slide
     if (deltaX > swipeThreshold) {
       nextSlide();
     } else if (deltaX < -swipeThreshold) {
@@ -86,7 +106,7 @@ export function HeroCarousel() {
     }
   };
 
-  const activeSlideData = HERO_SLIDES[currentSlide];
+  const activeSlideData = slides[currentSlide];
 
   // Motion variants for text content transitions
   const textVariants = {
@@ -99,7 +119,7 @@ export function HeroCarousel() {
     <div
       role="region"
       aria-roledescription="carousel"
-      aria-label="معرض استقطاب الشركاء"
+      aria-label={t('hero.carouselAria')}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsPaused(true)}
@@ -110,12 +130,13 @@ export function HeroCarousel() {
       className="relative w-full min-h-[90vh] lg:min-h-[94vh] flex items-center overflow-hidden focus:outline-none select-none"
     >
       {/* Background Slides Stack */}
-      {HERO_SLIDES.map((slide, index) => (
+      {slides.map((slide, index) => (
         <HeroSlide
           key={slide.id}
           slide={slide}
           isActive={index === currentSlide}
           prefersReducedMotion={prefersReducedMotion}
+          isRtl={isRtl}
         />
       ))}
 
@@ -160,7 +181,7 @@ export function HeroCarousel() {
                     <Button
                       variant="accent"
                       size="lg"
-                      icon={ArrowLeft}
+                      icon={CtaArrow}
                       iconPosition="end"
                     >
                       {activeSlideData.primaryCta.label}
@@ -186,7 +207,7 @@ export function HeroCarousel() {
         <div className="mt-12 sm:mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Indicators with slide numbers and animated active state */}
           <div className="flex items-center gap-3">
-            {HERO_SLIDES.map((slide, idx) => {
+            {slides.map((slide, idx) => {
               const isActive = idx === currentSlide;
               return (
                 <button
@@ -198,7 +219,7 @@ export function HeroCarousel() {
                       ? 'bg-white/15 border border-[#D4AF7C]/50'
                       : 'hover:bg-white/10 border border-transparent'
                   }`}
-                  aria-label={`الانتقال إلى الشريحة ${idx + 1}: ${slide.tag}`}
+                  aria-label={`${t('hero.goToSlidePrefix')} ${idx + 1}: ${slide.tag}`}
                   aria-current={isActive ? 'true' : 'false'}
                 >
                   <span
@@ -232,29 +253,28 @@ export function HeroCarousel() {
               type="button"
               onClick={() => setIsPaused(!isPaused)}
               className="p-2.5 rounded-full text-slate-300 hover:text-white bg-white/5 hover:bg-white/15 border border-white/10 transition-colors cursor-pointer"
-              aria-label={isPaused ? 'تشغيل العرض التلقائي' : 'إيقاف العرض التلقائي مؤقتاً'}
-              title={isPaused ? 'تشغيل' : 'إيقاف مؤقت'}
+              aria-label={isPaused ? t('hero.playAutoplayAria') : t('hero.pauseAutoplayAria')}
+              title={isPaused ? t('hero.playTitle') : t('hero.pauseTitle')}
             >
               {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
             </button>
 
-            {/* In RTL, Next slide button points Left (visual flow), Prev points Right */}
             <button
               type="button"
               onClick={prevSlide}
               className="p-2.5 rounded-full text-slate-300 hover:text-white bg-white/5 hover:bg-white/15 border border-white/10 transition-colors cursor-pointer"
-              aria-label="الشريحة السابقة"
+              aria-label={t('hero.prevSlideAria')}
             >
-              <ChevronRight className="w-5 h-5" />
+              {isRtl ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
             </button>
 
             <button
               type="button"
               onClick={nextSlide}
               className="p-2.5 rounded-full text-slate-300 hover:text-white bg-white/5 hover:bg-white/15 border border-white/10 transition-colors cursor-pointer"
-              aria-label="الشريحة التالية"
+              aria-label={t('hero.nextSlideAria')}
             >
-              <ChevronLeft className="w-5 h-5" />
+              {isRtl ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
             </button>
           </div>
         </div>

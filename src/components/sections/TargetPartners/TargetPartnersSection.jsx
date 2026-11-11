@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Container, SectionHeader } from '@/components/common';
 import { TARGET_PARTNERS_DATA } from './targetPartnersData';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function TargetPartnersSection() {
-  const { badge, headline, intro, subheading, domains } = TARGET_PARTNERS_DATA;
+  const { t, isRtl } = useLanguage();
+  const translatedDomains = t('targetPartners.domains');
+  const domains = TARGET_PARTNERS_DATA.domains.map((domain, idx) => {
+    const tr = Array.isArray(translatedDomains) ? translatedDomains[idx] : null;
+    if (!tr) return domain;
+    return {
+      ...domain,
+      title: tr.title,
+      points: tr.points,
+      text: tr.text,
+    };
+  });
+
   const [selectedId, setSelectedId] = useState(domains[0]?.id || null);
+  const CardArrow = isRtl ? ArrowLeft : ArrowRight;
 
   return (
     <section
       id="target-partners"
-      aria-label="من نبحث عنهم"
+      aria-label={t('targetPartners.sectionAria')}
       className="py-20 lg:py-28 bg-[#0A1C38] text-white relative overflow-hidden border-b border-white/10"
     >
       {/* Ambient Brand Glows */}
@@ -20,9 +34,9 @@ export function TargetPartnersSection() {
       <Container className="relative z-10">
         {/* Unified Centered Section Header with Lateral Lines */}
         <SectionHeader
-          badge={badge}
-          title={headline}
-          subtitle={intro}
+          badge={t('targetPartners.badge')}
+          title={t('targetPartners.headline')}
+          subtitle={t('targetPartners.intro')}
           centered={true}
           theme="dark"
           goldDivider={true}
@@ -30,11 +44,9 @@ export function TargetPartnersSection() {
           className="mb-10 sm:mb-14"
         />
 
-        {subheading && (
-          <p className="text-center text-sm sm:text-base font-bold text-[#D4AF7C] mb-8 font-cairo">
-            {subheading}
-          </p>
-        )}
+        <p className="text-center text-sm sm:text-base font-bold text-[#D4AF7C] mb-8 font-cairo">
+          {t('targetPartners.subheading')}
+        </p>
 
         {/* Stable 3x2 Grid - Zero Height Shifts / Zero Jitter */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -54,7 +66,7 @@ export function TargetPartnersSection() {
                     setSelectedId(domain.id);
                   }
                 }}
-                className={`p-7 rounded-2xl transition-all duration-300 cursor-pointer select-none text-right font-cairo flex flex-col justify-between border ${
+                className={`p-7 rounded-2xl transition-all duration-300 cursor-pointer select-none text-start font-cairo flex flex-col justify-between border ${
                   isSelected
                     ? 'bg-[#0F2D5B] border-[#D4AF7C] shadow-lg shadow-[#D4AF7C]/10 ring-1 ring-[#D4AF7C]'
                     : 'bg-[#0E2445]/80 hover:bg-[#0F2D5B] border-white/10 hover:border-white/20'
@@ -111,12 +123,12 @@ export function TargetPartnersSection() {
                 {/* Bottom Row Accent */}
                 <div className="pt-5 mt-5 border-t border-white/10 flex items-center justify-between text-xs">
                   <span className={isSelected ? 'text-[#D4AF7C] font-bold' : 'text-slate-400'}>
-                    {isSelected ? 'المجال المحدد' : 'انقر للاختيار'}
+                    {isSelected ? t('targetPartners.selectedLabel') : t('targetPartners.selectPrompt')}
                   </span>
-                  <ArrowLeft
+                  <CardArrow
                     className={`w-4 h-4 transition-transform duration-300 ${
                       isSelected
-                        ? 'text-[#D4AF7C] -translate-x-1'
+                        ? `text-[#D4AF7C] ${isRtl ? '-translate-x-1' : 'translate-x-1'}`
                         : 'text-slate-500'
                     }`}
                   />

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Menu, X, ArrowLeft } from 'lucide-react';
+import { Menu, X, ArrowLeft, ArrowRight, Globe } from 'lucide-react';
 import { Container, Button, BrandLogo } from '@/components/common';
 import { NAV_LINKS } from '@/constants';
 import { useScroll } from '@/hooks/useScroll';
+import { useLanguage } from '@/context/LanguageContext';
 import { cn } from '@/utils/cn';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isScrolled } = useScroll(20);
+  const { t, isRtl, toggleLang } = useLanguage();
+  const CtaArrow = isRtl ? ArrowLeft : ArrowRight;
 
   return (
     <header
@@ -42,16 +45,31 @@ export function Navbar() {
                     : 'text-slate-200 hover:text-[#D4AF7C]'
                 )}
               >
-                {link.label}
+                {t(link.labelKey)}
               </a>
             ))}
           </nav>
 
-          {/* CTA & Mobile Menu Toggle */}
-          <div className="flex items-center gap-3">
+          {/* Language Switcher, CTA & Mobile Menu Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={toggleLang}
+              aria-label={t('nav.langSwitchAria')}
+              className={cn(
+                'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold font-cairo rounded-lg border transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF7C]',
+                isScrolled
+                  ? 'bg-[#F8F6EF] text-[#0F2D5B] border-[#E7E3D4] hover:border-[#D4AF7C]'
+                  : 'bg-white/10 text-slate-100 border-white/20 hover:bg-white/20'
+              )}
+            >
+              <Globe className="w-3.5 h-3.5 text-[#D4AF7C]" />
+              <span>{t('nav.langSwitchLabel')}</span>
+            </button>
+
             <a href="#final-cta" className="hidden sm:inline-flex">
-              <Button variant="accent" size="sm" icon={ArrowLeft} iconPosition="end">
-                قدّم طلب الانضمام كشريك
+              <Button variant="accent" size="sm" icon={CtaArrow} iconPosition="end">
+                {t('nav.applyCta')}
               </Button>
             </a>
 
@@ -64,7 +82,7 @@ export function Navbar() {
                   ? 'text-[#0F2D5B] hover:bg-slate-100'
                   : 'text-white hover:bg-white/10'
               )}
-              aria-label="Toggle Navigation Menu"
+              aria-label={t('nav.toggleMenuAria')}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -82,7 +100,7 @@ export function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-3 py-2.5 text-sm font-bold font-cairo text-slate-200 hover:text-[#D4AF7C] hover:bg-white/5 rounded-lg transition-colors"
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </a>
               ))}
               <div className="pt-3 border-t border-white/10">
@@ -91,8 +109,8 @@ export function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full block"
                 >
-                  <Button variant="accent" size="sm" className="w-full" icon={ArrowLeft} iconPosition="end">
-                    قدّم طلب الانضمام كشريك
+                  <Button variant="accent" size="sm" className="w-full" icon={CtaArrow} iconPosition="end">
+                    {t('nav.applyCta')}
                   </Button>
                 </a>
               </div>

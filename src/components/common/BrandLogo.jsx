@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/utils/cn';
+import { useLanguage } from '@/context/LanguageContext';
 import logoLight from '@/assets/images/brand/logo-light-official.png';
 import logoDark from '@/assets/images/brand/logo-dark-official.png';
 import emblemImg from '@/assets/images/brand/emblem.png';
@@ -15,6 +16,7 @@ export function BrandLogo({
   _showSubtitle = true,
   ...props
 }) {
+  const { t } = useLanguage();
   const isDark = variant === 'dark';
 
   // Generous, readable heights for vertical-stacked brand mark & typography
@@ -31,7 +33,7 @@ export function BrandLogo({
     return (
       <img
         src={emblemImg}
-        alt="رمز شعار جسر الخبرة EXEP-RIDGE"
+        alt={t('site.emblemAlt')}
         className={cn('h-10 w-auto object-contain select-none', className)}
         {...props}
       />
@@ -42,7 +44,7 @@ export function BrandLogo({
     <div className={cn('inline-flex items-center select-none', className)} {...props}>
       <img
         src={isDark ? logoDark : logoLight}
-        alt="جسر الخبرة EXEP-RIDGE Software Solutions"
+        alt={t('site.logoAlt')}
         className={cn(currentHeight, 'w-auto object-contain drop-shadow-sm')}
         loading="eager"
       />

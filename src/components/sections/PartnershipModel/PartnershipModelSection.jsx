@@ -1,15 +1,17 @@
 import React from 'react';
 import { Container, SectionHeader } from '@/components/common';
-import { PARTNERSHIP_MODEL_DATA } from './partnershipModelData';
 import { Info, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function PartnershipModelSection() {
-  const { badge, headline, intro, subheading, pillars, note } = PARTNERSHIP_MODEL_DATA;
+  const { t } = useLanguage();
+  const intro = t('partnershipModel.intro');
+  const pillars = t('partnershipModel.pillars');
 
   return (
     <section
       id="partnership-model"
-      aria-label="مفهوم الشراكة"
+      aria-label={t('partnershipModel.sectionAria')}
       className="py-20 lg:py-28 bg-white border-b border-[#E7E3D4]/80 relative overflow-hidden"
     >
       {/* Background Decorative Accents */}
@@ -19,9 +21,9 @@ export function PartnershipModelSection() {
       <Container className="relative z-10">
         {/* Centered Header with Lateral Lines */}
         <SectionHeader
-          badge={badge}
-          title={headline}
-          subtitle={intro[1] || intro[0]}
+          badge={t('partnershipModel.badge')}
+          title={t('partnershipModel.headline')}
+          subtitle={Array.isArray(intro) ? (intro[1] || intro[0]) : ''}
           centered={true}
           theme="light"
           goldDivider={true}
@@ -29,18 +31,16 @@ export function PartnershipModelSection() {
           className="mb-12"
         />
 
-        {subheading && (
-          <p className="text-center text-sm sm:text-base font-bold text-[#0F2D5B] mb-10 font-cairo">
-            {subheading}
-          </p>
-        )}
+        <p className="text-center text-sm sm:text-base font-bold text-[#0F2D5B] mb-10 font-cairo">
+          {t('partnershipModel.subheading')}
+        </p>
 
         {/* Full-width Responsive 5-Pillar Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
-          {pillars.map((pillar, idx) => (
+          {(Array.isArray(pillars) ? pillars : []).map((pillar, idx) => (
             <div
               key={pillar.id}
-              className={`p-7 rounded-2xl bg-[#F8F6EF]/70 border border-[#E7E3D4] hover:border-[#D4AF7C]/60 hover:shadow-lg transition-all duration-300 text-right font-cairo flex flex-col justify-between ${
+              className={`p-7 rounded-2xl bg-[#F8F6EF]/70 border border-[#E7E3D4] hover:border-[#D4AF7C]/60 hover:shadow-lg transition-all duration-300 text-start font-cairo flex flex-col justify-between ${
                 idx === 4 ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
             >
@@ -68,7 +68,7 @@ export function PartnershipModelSection() {
 
               <div className="mt-5 pt-3 border-t border-[#E7E3D4]/60">
                 <span className="text-[11px] font-bold text-[#0F2D5B]/70 tracking-wider">
-                  ركيزة أساسية في الشراكة
+                  {t('partnershipModel.pillarFooterTag')}
                 </span>
               </div>
             </div>
@@ -76,17 +76,15 @@ export function PartnershipModelSection() {
         </div>
 
         {/* Explanatory Note Card */}
-        {note && (
-          <div className="max-w-3xl mx-auto p-5 sm:p-6 rounded-2xl bg-[#F8F6EF] border border-[#D4AF7C]/40 shadow-sm text-right font-cairo">
-            <div className="flex items-center gap-2.5 text-xs font-bold text-[#0F2D5B] uppercase tracking-wider mb-2">
-              <Info className="w-4 h-4 text-[#D4AF7C] shrink-0" />
-              <span>{note.title}:</span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-              {note.content}
-            </p>
+        <div className="max-w-3xl mx-auto p-5 sm:p-6 rounded-2xl bg-[#F8F6EF] border border-[#D4AF7C]/40 shadow-sm text-start font-cairo">
+          <div className="flex items-center gap-2.5 text-xs font-bold text-[#0F2D5B] uppercase tracking-wider mb-2">
+            <Info className="w-4 h-4 text-[#D4AF7C] shrink-0" />
+            <span>{t('partnershipModel.noteTitle')}:</span>
           </div>
-        )}
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+            {t('partnershipModel.noteContent')}
+          </p>
+        </div>
 
       </Container>
     </section>
