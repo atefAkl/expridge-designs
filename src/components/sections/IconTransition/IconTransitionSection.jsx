@@ -44,16 +44,16 @@ export function IconTransitionSection() {
   return (
     <section
       aria-label={t('brandsMarquee.sectionAria')}
-      className="py-12 bg-white border-t border-b border-[#E7E3D4] relative overflow-hidden select-none"
+      className="py-3 bg-white border-t border-b border-[#E7E3D4] relative overflow-hidden select-none"
     >
       {/* Lateral Gradient Fades for Smooth Infinite Illusion */}
       <div className="absolute inset-y-0 right-0 w-24 sm:w-36 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
       <div className="absolute inset-y-0 left-0 w-24 sm:w-36 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
 
       {/* Infinite Scrolling Track (fixed LTR track for consistent continuous motion in RTL & LTR) */}
-      <div className="flex w-full overflow-hidden" dir="ltr">
+      <div className="flex w-full overflow-hidden py-10" dir="ltr">
         <motion.div
-          className="flex items-center gap-6 sm:gap-10 shrink-0 pr-6 sm:pr-10"
+          className="flex items-center gap-10 sm:gap-14 shrink-0 pr-10 sm:pr-14"
           animate={{ x: ['0%', '-50%'] }}
           transition={{
             duration: 30,
@@ -64,19 +64,26 @@ export function IconTransitionSection() {
           {marqueeItems.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
-              className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#F8F6EF] border border-[#E7E3D4] hover:border-[#D4AF7C] transition-all shadow-sm shrink-0 font-cairo"
+              tabIndex={0}
+              aria-label={item.label}
+              className="group relative p-0 m-0 flex items-center justify-center shrink-0 font-cairo focus:outline-none"
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-white border border-[#E7E3D4] p-1.5 overflow-hidden">
-                <img
-                  src={item.logo}
-                  alt={item.label}
-                  className="w-full h-full object-contain"
-                  loading="lazy"
-                />
-              </div>
-              <span className="text-xs sm:text-sm font-bold text-[#0F2D5B] whitespace-nowrap">
+              <span
+                role="tooltip"
+                className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 translate-y-1 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-200 z-20 px-2.5 py-1 rounded-md bg-[#0F2D5B] text-white text-xs font-semibold whitespace-nowrap shadow-md"
+              >
                 {item.label}
+                <span
+                  aria-hidden="true"
+                  className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#0F2D5B]"
+                />
               </span>
+              <img
+                src={item.logo}
+                alt={item.label}
+                className="h-20 w-auto max-w-none object-contain rounded-xl grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-focus-visible:grayscale-0 group-focus-visible:opacity-100 group-hover:scale-105 transition-all duration-300 drop-shadow-[0_8px_18px_rgba(15,45,91,0.18)] group-hover:drop-shadow-[0_12px_24px_rgba(15,45,91,0.28)]"
+                loading="lazy"
+              />
             </div>
           ))}
         </motion.div>
